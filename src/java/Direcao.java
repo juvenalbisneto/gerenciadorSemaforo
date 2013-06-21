@@ -1,5 +1,6 @@
 
 public class Direcao {
+	public static final int NADA = 0;
 	public static final int DIREITA = 1;
 	public static final int ESQUERDA = 2;
 	public static final int BAIXO = 3;
