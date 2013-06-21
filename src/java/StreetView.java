@@ -19,12 +19,12 @@ public class StreetView extends GridWorldView{
 		//Location lcar1 = smodel.getAgPos(0);
 		//Location lcar2 = smodel.getAgPos(1);
         super.drawAgent(g, x, y, Color.lightGray, -1);
-        switch (object) {
-            case StreetModel.SEMAFORO:
-                //TODO PINTAR O GRID
-            	super.drawAgent(g, x, y, Color.red, -1);
-                break;
-        }
+//        switch (object) {
+//            case StreetModel.SEMAFORO:
+//                //TODO PINTAR O GRID
+//            	super.drawAgent(g, x, y, Color.red, -1);
+//                break;
+//        }
 	}
 	
 	@Override
