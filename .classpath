@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="*.asl" kind="src" path="src/asl"/>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry exported="true" kind="lib" path="/Users/juvenalbisneto/Developer/Jason-1.3.9/lib/jason.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/juvenalbisneto/Developer/Jason-1.3.9/lib/c4jason.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/juvenalbisneto/Developer/Jason-1.3.9/lib/cartago.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/juvenalbisneto/Desktop/gerenciadorSemaforo 0.3/lib/jFuzzyLogic_v3.0.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

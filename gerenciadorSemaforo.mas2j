@@ -1,0 +1,18 @@
+MAS gerenciadorSemaforo {
+
+	infrastructure: Centralised
+	
+	//environment: StreetEnvironment(gui)
+	environment: c4jason.CartagoEnvironment
+  
+    agents:
+		gui      agentArchClass c4jason.CAgentArch;
+        //semaforo agentArchClass c4jason.CAgentArch;
+        //carro    agentArchClass c4jason.CAgentArch;
+		
+	classpath:
+		"../../../lib/cartago.jar";
+		"../../../lib/c4jason.jar";
+	aslSourcePath:
+		"src/asl";
+}
