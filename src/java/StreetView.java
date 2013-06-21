@@ -7,7 +7,7 @@ import jason.environment.grid.Location;
 public class StreetView extends GridWorldView{
 	StreetModel smodel;
 	public StreetView(StreetModel model) {
-		super(model, "Traffic Control", 700);
+		super(model, "Controle de Tr‰nsito", 700);
         smodel = model;
         defaultFont = new Font("Arial", Font.BOLD, 16); // change default font
         setVisible(true);
