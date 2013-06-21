@@ -1,10 +1,9 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import jason.environment.grid.GridWorldView;
 import jason.environment.grid.Location;
 
 
+@SuppressWarnings("serial")
 public class StreetView extends GridWorldView{
 	StreetModel smodel;
 	public StreetView(StreetModel model) {

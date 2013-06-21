@@ -6,6 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class GridCell extends JPanel{
 	public Location location;
 	boolean ehRua;

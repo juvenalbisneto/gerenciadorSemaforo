@@ -1,10 +1,10 @@
 package teste;
 
-import java.util.HashMap;
+//import java.util.HashMap;
 
 import net.sourceforge.jFuzzyLogic.FIS;
-import net.sourceforge.jFuzzyLogic.FunctionBlock;
-import net.sourceforge.jFuzzyLogic.rule.RuleBlock;
+//import net.sourceforge.jFuzzyLogic.FunctionBlock;
+//import net.sourceforge.jFuzzyLogic.rule.RuleBlock;
 
 public class FuzzyTest {
 

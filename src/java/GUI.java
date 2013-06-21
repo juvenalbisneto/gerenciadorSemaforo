@@ -1,14 +1,14 @@
-import jason.environment.grid.Location;
+//import jason.environment.grid.Location;
 
 import java.awt.event.*;
-import javax.swing.*;
+//import javax.swing.*;
 import java.awt.Container;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import cartago.INTERNAL_OPERATION;
-import cartago.OPERATION;
+//import cartago.OPERATION;
 import cartago.tools.GUIArtifact;
 
 public class GUI extends GUIArtifact {
@@ -16,15 +16,17 @@ public class GUI extends GUIArtifact {
 	public Frame frame;
 	
 	public void setup() {
-		frame = new Frame();
-		frame.setVisible(true);
+		StreetModel model = new StreetModel(10,10,2);
+		StreetView view = new StreetView(model);
+		view.setVisible(true);
+//		frame = new Frame();
+//		frame.setVisible(true);
 		
 //		linkActionEventToOp(frame.okButton,"ok");
 //		linkKeyStrokeToOp(frame.text,"ENTER","updateText");
 //		linkWindowClosingEventToOp(frame, "closed");
 //
 //		defineObsProperty("value",getValue());
-		Carro carro = new Carro(frame.grid[5][1],this);
 	}
 
 //	@INTERNAL_OPERATION void ok(ActionEvent ev){
@@ -48,6 +50,7 @@ public class GUI extends GUIArtifact {
 //		return Integer.parseInt(frame.getText());
 //	}
 
+	@SuppressWarnings("serial")
 	class Frame extends JFrame {
 //		private JTextField text;
 		private static final int gridSize = 10;

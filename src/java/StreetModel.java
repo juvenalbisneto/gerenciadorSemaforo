@@ -20,7 +20,7 @@ public class StreetModel extends GridWorldModel {
 	public static final int frenteDireita = 4;
 	public static final int frenteEsquerda = 5;
 	
-	public static final int GridSize = 3;
+	public static final int GridSize = 10;
 	
 //	Location lcar1 = new Location(GridSize-1, GridSize-1);
 //	Location lcar2 = new Location(GridSize-1, GridSize-2);
@@ -33,7 +33,7 @@ public class StreetModel extends GridWorldModel {
 	
 	public StreetModel(int w, int h, int nbAgs) {
 		super(GridSize,GridSize, 2);
-		addWall(1, 1, 1, 1); // obstaculo em (1,1) 
+//		addWall(1, 1, 1, 1); // obstaculo em (1,1) 
 //		setAgPos(0, GridSize-1, 0);
 //		setAgPos(1, 0, GridSize-1);
 //		add(SEMAFORO, lsem1);
