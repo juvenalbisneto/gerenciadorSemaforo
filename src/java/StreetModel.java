@@ -1,6 +1,6 @@
 import java.util.Random;
 import java.util.HashMap;
-import java.util.Vector;
+//import java.util.Vector;
 import java.util.Timer;
 import java.util.TimerTask;
 //import jason.environment.grid.Area;
@@ -8,8 +8,8 @@ import jason.environment.grid.GridWorldModel;
 import jason.environment.grid.Location;
 
 public class StreetModel extends GridWorldModel {
-	public static final int GridSize = 10;
-	public static final int TIMER = 2000;
+	public int gridSize;
+	public static final int TIMER = 1000;
 	
 	public static final int SEMAFORO = 8;
 	public static final int CARRO = 16;
@@ -20,27 +20,28 @@ public class StreetModel extends GridWorldModel {
 	
 	private HashMap<Integer, Location> inicio;
 	private HashMap<Location, Integer[]> direcoes;
-	private Vector<Location> carros;
+	private HashMap<Integer, Location> carros;
 	
 	private Timer timer;
 	
 //	Area areaSem0;
 //	Area areaSem1;
 	
-	public StreetModel(int w, int h, int nbAgs) {
-		super(GridSize,GridSize, nbAgs);
+	public StreetModel(int gridSize) {
+		super(gridSize,gridSize,0);
+		this.gridSize = gridSize;
 		
 		inicio = new HashMap<Integer, Location>();
 		direcoes = new HashMap<Location, Integer[]>();
-		carros = new Vector<Location>();
+		carros = new HashMap<Integer, Location>();
 		
 		mapGenerator();
 		
-		addCarro(origin);
-		addCarro(new Location(2,0));
-		addCarro(new Location(4,0));
-//		moveCarros();
-//		moveCarros();
+		addCarro(0, origin);
+		addCarro(1, new Location(2,0));
+//		for(int cont = 0; cont < 10; cont ++)
+//			moveCarros();
+
 		
 		timer = new Timer();
 		timer.schedule(new MoveTask(), TIMER);
@@ -65,58 +66,51 @@ public class StreetModel extends GridWorldModel {
 	
 	//MAP GENERATOR
 	public void mapGenerator(){
-		Integer[] direcaoParaBaixo = new Integer[1];
-		direcaoParaBaixo[0] = Direcao.BAIXO;
-		for(int contX = 0; contX < GridSize; contX++){
-			for(int contY = 0; contY < GridSize; contY++){
-				direcoes.put(new Location(contX,contY), direcaoParaBaixo);
+		if(view != null) System.out.println("TEM VIEW");
+		Integer[] direcao = new Integer[2];
+		direcao[0] = Direcao.BAIXO;
+		direcao[1] = Direcao.DIREITA;
+		for(int contX = 0; contX < gridSize; contX++){
+			for(int contY = 0; contY < gridSize; contY++){
+				direcoes.put(new Location(contX,contY), direcao);
 			}
 		}
 	}
 	
-	public boolean sinalVermelho(){
-		//TODO
-		return true;
-	}
-	
 	
 	//CARRO
-	public boolean addCarro(Location loc){
+	public boolean addCarro(int index, Location loc){
 		if(isFree(CARRO, loc)){
 			add(CARRO, loc);
-			carros.add(loc);
+			carros.put(index,loc);
 			return true;
 		}
 		return false;
 	}
-	public boolean removeCarro(Location loc){
-		remove(CARRO, loc);
-		carros.removeElement(loc);
+	public boolean removeCarro(int index){
+		remove(CARRO, carros.get(index));
+		carros.remove(index);
 		return true;
 	}
 	public void moveCarros(){
-		System.out.println("QTD Carros: "+carros.size());
 		for(int cont = 0; cont < carros.size(); cont++){
-			moveCarroAt(carros.get(cont));
-			System.out.println("[carro] at ["+carros.get(cont).x+"]["+carros.get(cont).y+"]");
+			moveCarro(cont);
 		}
-		timer.schedule(new MoveTask(), TIMER);
 	}
-    public boolean moveCarroAt(Location location){
-    	int sentido = escolheSentido(location);
-    	
+    public boolean moveCarro(int index){
+    	int sentido = escolheSentido(carros.get(index));
     	switch(sentido){
     		case Direcao.ESQUERDA:
-    			moveCarroFromTo(location,-1,0);
+    			moveCarroTo(index,-1,0);
     			break;
     		case Direcao.DIREITA:
-    			moveCarroFromTo(location,+1,0);
+    			moveCarroTo(index,+1,0);
     			break;
     		case Direcao.CIMA:
-    			moveCarroFromTo(location,0,-1);
+    			moveCarroTo(index,0,-1);
     			break;
     		case Direcao.BAIXO:
-    			moveCarroFromTo(location,0,+1);
+    			moveCarroTo(index,0,+1);
     			break;
     		default:
     			return false;
@@ -125,6 +119,7 @@ public class StreetModel extends GridWorldModel {
         return true;
     }
 	public int escolheSentido(Location location){
+		System.out.println("escolhe");
 		Integer[] direcoes = this.direcoes.get(location);
 		
 		if(direcoes.length == 1){
@@ -134,19 +129,16 @@ public class StreetModel extends GridWorldModel {
 			int direcao = generator.nextInt(direcoes.length);
 			return direcoes[direcao];
 		} else
-			return 0;
+			return Direcao.NADA;
 	}
-    public void moveCarroFromTo(Location location, int deslocamentoX, int deslocamentoY){
-    	Location auxLocation = location;
+    public void moveCarroTo(int index, int deslocamentoX, int deslocamentoY){
+    	Location auxLocation = new Location(carros.get(index).x, carros.get(index).y);
     	auxLocation.x += deslocamentoX;
     	auxLocation.y += deslocamentoY;
     	
-    	if(auxLocation.x >= GridSize || auxLocation.y >= GridSize)
-    		return;
-    	
-    	if(!hasObject(CARRO,auxLocation)){
-    		removeCarro(location);
-    		addCarro(auxLocation);
+    	if(isFree(auxLocation) && inGrid(auxLocation.x, auxLocation.y)){
+    		removeCarro(index);
+    		addCarro(index, auxLocation);
     	}
     }
     
@@ -177,6 +169,10 @@ public class StreetModel extends GridWorldModel {
 	class MoveTask extends TimerTask{
 		public void run(){
 			moveCarros();
+			timer.cancel();
+			
+			timer = new Timer();
+			timer.schedule(new MoveTask(), TIMER);
 		}
 	}
 }

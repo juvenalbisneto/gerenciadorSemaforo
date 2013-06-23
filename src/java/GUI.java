@@ -1,7 +1,4 @@
-//import jason.environment.grid.Location;
-
 import java.awt.event.*;
-//import javax.swing.*;
 import java.awt.Container;
 import java.awt.GridLayout;
 
@@ -16,7 +13,7 @@ public class GUI extends GUIArtifact {
 	public Frame frame;
 	
 	public void setup() {
-		StreetModel model = new StreetModel(10,10,2);
+		StreetModel model = new StreetModel(10);
 		StreetView view = new StreetView(model);
 		view.setVisible(true);
 //		frame = new Frame();

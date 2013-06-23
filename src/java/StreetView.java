@@ -8,8 +8,9 @@ public class StreetView extends GridWorldView{
 	StreetModel smodel;
 	
 	public StreetView(StreetModel model) {
-		super(model, "Controle de Tr‰nsito", 700);
+		super(model, "Controle de Tr‰nsito", model.gridSize*60);
         smodel = model;
+        model.setView(this);
         defaultFont = new Font("Arial", Font.BOLD, 16); // change default font
         setVisible(true);
         repaint();
@@ -17,9 +18,6 @@ public class StreetView extends GridWorldView{
 	
 	@Override
 	public void draw(Graphics g, int x, int y, int object) {
-		//Location lcar1 = smodel.getAgPos(0);
-		//Location lcar2 = smodel.getAgPos(1);
-		
 		super.drawAgent(g, x, y, Color.LIGHT_GRAY, -1);
         switch (object) {
             case StreetModel.SEMAFORO:

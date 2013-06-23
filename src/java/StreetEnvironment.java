@@ -15,7 +15,7 @@ public class StreetEnvironment extends Environment{
 	
 	@Override
 	public void init(String[] args){
-		model = new StreetModel(3,3,2);
+		model = new StreetModel(3);
 		
 		if(args.length == 1 && args[0].equals("gui")){
 			StreetView view = new StreetView(model);
