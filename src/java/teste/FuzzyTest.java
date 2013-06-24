@@ -37,7 +37,7 @@ public class FuzzyTest {
         System.out.println("DEFUZZIFY: " + value);
         value = fis.getVariable("ajusteSem").getValue();
         System.out.println("GET VALUE: "+value);
-
+        System.out.println("VALOOOOOOOOOOR "+value);
         
         // Print ruleSet
         System.out.println(fis);

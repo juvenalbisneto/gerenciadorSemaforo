@@ -1,4 +1,5 @@
 import jason.environment.grid.Location;
+import net.sourceforge.jFuzzyLogic.FIS;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,7 +34,6 @@ public class Semaforo{
 		this.rua2 = rua2;
 		
 		this.aberto1 = true;
-		this.fila = countCarros();
 		
 		timer = new Timer();
 		timer.schedule(new OpenTask(), tempo1*1000);
@@ -50,29 +50,57 @@ public class Semaforo{
 		return false;
 	}
 	
-	public int countCarros(){ //Conta os carros da rua parada
+	public int countCarros(int rua){
 		int carros = 0;
-		if(aberto1){
-			for(int cont = 0; cont < rua2.length; cont++)
-				if(smodel.hasObject(StreetModel.CARRO, rua2[cont]))
-					carros++;
-		} else {
+		if(rua == 1){
 			for(int cont = 0; cont < rua1.length; cont++)
 				if(smodel.hasObject(StreetModel.CARRO, rua1[cont]))
 					carros++;
+		} else if(rua == 2){
+			for(int cont = 0; cont < rua2.length; cont++)
+				if(smodel.hasObject(StreetModel.CARRO, rua2[cont]))
+					carros++;
 		}
-		System.out.println("[SINAL "+location+"] count: "+carros);
 		return carros;
+	}
+	
+	public int fuzzy(){
+        String fileName = "fcl/fuzzyTraffic.fcl";
+        FIS fis = FIS.load(fileName,true);
+        // Error while loading?
+        if( fis == null ) { 
+            System.err.println("Can't load file: '"+fileName+"'");
+            return 0;
+        }
+        
+        if(aberto1){
+        	fis.setVariable("qtdcarros1", countCarros(2));
+            fis.setVariable("qtdcarros2", countCarros(1));
+        } else {
+        	fis.setVariable("qtdcarros1", countCarros(1));
+            fis.setVariable("qtdcarros2", countCarros(2));
+        }
+
+        fis.evaluate();
+        
+        double value = fis.getVariable("ajusteSem").defuzzify();
+        
+        return (int)value;
 	}
 	
 	//TIMER TASK
 		class OpenTask extends TimerTask{
 			public void run(){
 				timer.cancel();
+				System.out.println("[SINAL "+location+"] - T1:"+tempo1+" T2:"+tempo2+ " [PRE]");
+				if(aberto1){
+					tempo2 += fuzzy();
+				} else {
+					tempo1 += fuzzy();
+				}
+				System.out.println("[SINAL "+location+"] - T1:"+tempo1+" T2:"+tempo2+ " [POS]");
 				
 				aberto1 = !aberto1;
-				
-				fila = countCarros();
 				
 				timer = new Timer();
 				timer.schedule(new OpenTask(), (aberto1 ? tempo1 : tempo2)*1000);
