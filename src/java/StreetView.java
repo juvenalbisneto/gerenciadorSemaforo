@@ -24,9 +24,6 @@ public class StreetView extends GridWorldView{
         		g.setColor(Color.DARK_GRAY);
             	super.drawString(g, x, y, defaultFont, smodel.direcao(x,y));
         		break;
-            case StreetModel.SEMAFORO:
-            	super.drawAgent(g, x, y, Color.RED, -1);
-                break;
             case StreetModel.CARRO:
             	super.drawAgent(g, x, y, Color.cyan, -1);
             	g.setColor(Color.BLUE);
@@ -35,18 +32,12 @@ public class StreetView extends GridWorldView{
         }
 	}
 	
-//	@Override
-//	public void drawAgent(Graphics g, int x, int y, Color c, int id) {
-//        Location lcar1 = smodel.getAgPos(0);
-//        Location lcar2 = smodel.getAgPos(1);
-//        if (!lcar1.equals(smodel.lsem1) && !lcar1.equals(smodel.lsem2) &&
-//        	!lcar2.equals(smodel.lsem1) && !lcar2.equals(smodel.lsem2)) {
-//            c = Color.blue;
-//            //TODO PINTAR AGENTES NOS SINAIS
-//            super.drawAgent(g, x, y, c, -1);
-//            g.setColor(Color.black);
-//            super.drawString(g, x, y, defaultFont, "Carro");
-//        }
-//	}
+	@Override
+	public void drawAgent(Graphics g, int x, int y, Color c, int id) {
+		c = Color.blue;
+		super.drawAgent(g, x, y, c, -1);
+		g.setColor(Color.black);
+		super.drawString(g, x, y, defaultFont, "S");
+	}
 
 }

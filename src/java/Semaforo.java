@@ -1,61 +1,53 @@
 import jason.environment.grid.Location;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Semaforo{
-	private Location location;
-	//Direcao
-	private int direcao;
+	public Location location;
+	//Origens
+	public Location origem1;
+	public Location origem2;
 	//Aberto
-	private boolean aberto;
-	//Tempo de abertura
-	private int tempo;
-	//Semaforo irmao
-	private Semaforo brother;
+	private boolean aberto1;
+	//Tempo de abertura (em segundos)
+	public int tempo1;
+	public int tempo2;
+	//Timer (contador)
+	private Timer timer;
 	
-	public Semaforo(Location location, int direcao, boolean aberto, int tempo, Semaforo brother){
+	
+	public Semaforo(Location location, Location origem1, Location origem2, int tempo1, int tempo2){
 		this.location = location;
-		this.direcao = direcao;
-		this.aberto = aberto;
-		this.tempo = tempo;
-		this.brother = brother;
-	}
-	public Semaforo(){
+		this.origem1 = origem1;
+		this.origem2 = origem2;
+		this.tempo1 = tempo1;
+		this.tempo2 = tempo2;
+		this.aberto1 = true;
 		
+		timer = new Timer();
+		timer.schedule(new OpenTask(), tempo1*1000);
 	}
 	
-	// GETTERS E SETTERS
-	public Location getLocation(){
-		return this.location;
-	}
-	public void setLocation(int x, int y){
-		this.location = new Location(x,y);
-	}
-	
-	public int getDirecao() {
-		return direcao;
-	}
-	public void setDirecao(int direcao) {
-		this.direcao = direcao;
+	public boolean canPass(Location origin){
+		if(origin.x == origem1.x && origin.y == origem1.y){
+			return aberto1;
+		}
+		if(origin.x == origem2.x && origin.y == origem2.y){
+			return !aberto1;
+		}
+		
+		return false;
 	}
 	
-	public boolean getAberto(){
-		return aberto;
-	}
-	public void setAberto(boolean aberto){
-		this.aberto = aberto;
-		this.brother.aberto = !this.aberto;
-	}
-	
-	public int getTempo() {
-		return tempo;
-	}
-	public void setTempo(int tempo) {
-		this.tempo = tempo;
-	}
-	
-	public Semaforo getBrother(){
-		return brother;
-	}
-	public void setBrother(Semaforo brother){
-		this.brother = brother;
-	}
+	//TIMER TASK
+		class OpenTask extends TimerTask{
+			public void run(){
+				timer.cancel();
+				
+				aberto1 = !aberto1;
+				
+				timer = new Timer();
+				timer.schedule(new OpenTask(), (aberto1 ? tempo1 : tempo2)*1000);
+			}
+		}
 }
