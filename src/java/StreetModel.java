@@ -9,18 +9,18 @@ import jason.environment.grid.Location;
 
 public class StreetModel extends GridWorldModel {
 	public int gridSize;
-	public static final int TIMER = 300;
-	public static final int MAX_CARROS = 3;
+	public static final int TIMER = 150;
+	public static final int MAX_CARROS = 20;
 	
 	public static final int RUA = 8;
 	public static final int CARRO = 16;
 	
 	public Location ORIGIN;
-	public Location END;
+//	public Location END;
 	
 	private HashMap<Location, Semaforo> semaforos;
 	private HashMap<Location, Integer[]> direcoes;
-	private HashMap<Integer, Location> carros;
+	public HashMap<Integer, Location> carros;
 	private Integer[] waitList;
 	
 	private Timer timer;
@@ -45,21 +45,33 @@ public class StreetModel extends GridWorldModel {
 	public void mapGenerator(){
 		// MAPA GALT
 		ORIGIN = new Location(8,0);
-		END = new Location(0,7);
+//		END = new Location(0,7);
 		
-		addSemaforo(0, new Location(6,0), new Location(7,0), new Location(6,1));
-		addSemaforo(1, new Location(3,0), new Location(4,0), new Location(2,0));
-		addSemaforo(2, new Location(5,2), new Location(4,2), new Location(5,3));
-		addSemaforo(3, new Location(3,4), new Location(3,3), new Location(2,4));
-		addSemaforo(4, new Location(3,6), new Location(3,5), new Location(4,6));
-		addSemaforo(5, new Location(6,6), new Location(6,5), new Location(7,6));
+		Location[] rua01 = new Location[2]; rua01[0] = new Location(7,0); rua01[1] = new Location(8,0);
+		Location[] rua02 = new Location[2]; rua02[0] = new Location(6,1); rua02[1] = new Location(6,2);
+		addSemaforo(0, new Location(6,0), new Location(7,0), new Location(6,1), rua01, rua02);
+		Location[] rua11 = new Location[3]; rua11[0] = new Location(4,0); rua11[1] = new Location(5,0); rua11[2] = new Location(6,0);
+		Location[] rua12 = new Location[3]; rua12[0] = new Location(2,0); rua12[1] = new Location(1,0); rua12[2] = new Location(0,0);
+		addSemaforo(1, new Location(3,0), new Location(4,0), new Location(2,0), rua11, rua12);
+		Location[] rua21 = new Location[2]; rua21[0] = new Location(4,2); rua21[1] = new Location(3,2);
+		Location[] rua22 = new Location[2]; rua22[0] = new Location(5,3); rua22[1] = new Location(5,4);
+		addSemaforo(2, new Location(5,2), new Location(4,2), new Location(5,3), rua21, rua22);
+		Location[] rua31 = new Location[3]; rua31[0] = new Location(3,3); rua31[1] = new Location(3,2); rua31[2] = new Location(3,1);
+		Location[] rua32 = new Location[3]; rua32[0] = new Location(2,4); rua32[1] = new Location(1,4); rua32[2] = new Location(0,4);
+		addSemaforo(3, new Location(3,4), new Location(3,3), new Location(2,4), rua31, rua32);
+		Location[] rua41 = new Location[3]; rua41[0] = new Location(3,5); rua41[1] = new Location(3,4); rua41[2] = new Location(3,3);
+		Location[] rua42 = new Location[3]; rua42[0] = new Location(4,6); rua42[1] = new Location(5,6); rua42[2] = new Location(6,6);
+		addSemaforo(4, new Location(3,6), new Location(3,5), new Location(4,6), rua41, rua42);
+		Location[] rua51 = new Location[3]; rua51[0] = new Location(6,5); rua51[1] = new Location(6,4); rua51[2] = new Location(5,4);
+		Location[] rua52 = new Location[3]; rua52[0] = new Location(7,6); rua52[1] = new Location(8,6); rua52[2] = new Location(8,5);
+		addSemaforo(5, new Location(6,6), new Location(6,5), new Location(7,6), rua51, rua52);
 		
 		Integer[] esq   = new Integer[1];   esq[0] = Direcao.ESQUERDA;
 		Integer[] dir   = new Integer[1];   dir[0] = Direcao.DIREITA;
 		Integer[] cima  = new Integer[1];  cima[0] = Direcao.CIMA;
 		Integer[] baixo = new Integer[1]; baixo[0] = Direcao.BAIXO;
-		Integer[] dirBa = new Integer[2]; dirBa[0] = Direcao.DIREITA;   dirBa[1] = Direcao.BAIXO;
-		Integer[] dirCi = new Integer[2]; dirCi[0] = Direcao.DIREITA;   dirCi[1] = Direcao.CIMA;
+		Integer[] dirBa = new Integer[2]; dirBa[0] = Direcao.BAIXO;     dirBa[1] = Direcao.DIREITA;
+		Integer[] dirCi = new Integer[2]; dirCi[0] = Direcao.CIMA;      dirCi[1] = Direcao.DIREITA;
 		Integer[] cimBa = new Integer[2]; cimBa[0] = Direcao.CIMA;      cimBa[1] = Direcao.BAIXO;
 		
 		direcoes.put(new Location(0,0), dir);
@@ -97,7 +109,7 @@ public class StreetModel extends GridWorldModel {
 		direcoes.put(new Location(3,5), baixo);
 		direcoes.put(new Location(6,5), baixo);
 		direcoes.put(new Location(8,5), baixo);
-		direcoes.put(new Location(0,6), cimBa);
+		direcoes.put(new Location(0,6), cima);//cimBa);
 		direcoes.put(new Location(1,6), esq);
 		direcoes.put(new Location(2,6), esq);
 		direcoes.put(new Location(3,6), esq);
@@ -106,7 +118,7 @@ public class StreetModel extends GridWorldModel {
 		direcoes.put(new Location(6,6), esq);
 		direcoes.put(new Location(7,6), esq);
 		direcoes.put(new Location(8,6), esq);
-		direcoes.put(new Location(0,7), baixo);
+		//direcoes.put(new Location(0,7), baixo);
 		
 		//MAPA SIMPLES
 //		ORIGIN = new Location(5,1);
@@ -166,18 +178,18 @@ public class StreetModel extends GridWorldModel {
 		Integer[] dir = direcoes.get(new Location(x,y));
 		for(int cont = 0; cont < dir.length; cont++){
 			switch(dir[cont]){
-			case Direcao.BAIXO:
-				retorno +=  ".";
-				break;
-			case Direcao.CIMA:
-				retorno +=  "^";
-				break;
-			case Direcao.ESQUERDA:
-				retorno +=  "<";
-				break;
-			case Direcao.DIREITA:
-				retorno +=  ">";
-				break;
+				case Direcao.ESQUERDA:
+					retorno +=  "<";
+					break;
+				case Direcao.BAIXO:
+					retorno +=  ".";
+					break;
+				case Direcao.CIMA:
+					retorno +=  "^";
+					break;
+				case Direcao.DIREITA:
+					retorno +=  ">";
+					break;
 			}
 		}
 		
@@ -187,9 +199,9 @@ public class StreetModel extends GridWorldModel {
 	
 	
 	//SEMAFORO
-	public void addSemaforo(int index, Location loc, Location origem1, Location origem2){
+	public void addSemaforo(int index, Location loc, Location origem1, Location origem2, Location[] rua1, Location[] rua2){
 		this.setAgPos(index, loc);
-		semaforos.put(loc, new Semaforo(loc, origem1, origem2, 4, 4));
+		semaforos.put(loc, new Semaforo(this, loc, origem1, origem2, 4, 4, rua1, rua2));
 	}
 	
 	
@@ -254,18 +266,17 @@ public class StreetModel extends GridWorldModel {
     	auxLocation.y += deslocamentoY;
     	
     	if(!hasObject(CARRO,auxLocation) && inGrid(auxLocation.x, auxLocation.y)){
-    		if(auxLocation.x == END.x && auxLocation.y == END.y){
-    			removeCarro(index);
-    			Integer[] waitAux = new Integer[this.waitList.length+1];
-    			for(int cont = 0; cont < this.waitList.length; cont++)
-    				waitAux[cont] = this.waitList[cont];
-    			waitAux[waitAux.length-1] = index;
-    			this.waitList = waitAux;
-    		} else {
+//    		if(auxLocation.x == END.x && auxLocation.y == END.y){
+//    			removeCarro(index);
+//    			Integer[] waitAux = new Integer[this.waitList.length+1];
+//    			for(int cont = 0; cont < this.waitList.length; cont++)
+//    				waitAux[cont] = this.waitList[cont];
+//    			waitAux[waitAux.length-1] = index;
+//    			this.waitList = waitAux;
+//    		} else {
     			Semaforo aux = this.semaforos.get(auxLocation);
     			if(aux != null){
-    				boolean can =aux.canPass(carros.get(index));
-    				System.out.println("Semaforo: "+aux.location+" | "+can);
+    				boolean can = aux.canPass(carros.get(index));
     	    		if(can){
     	    			removeCarro(index);
     	    			addCarro(index, auxLocation);
@@ -274,7 +285,7 @@ public class StreetModel extends GridWorldModel {
     	    		removeCarro(index);
     	    		addCarro(index, auxLocation);
     	    	}
-    		}
+//    		}
     	}
     }
 

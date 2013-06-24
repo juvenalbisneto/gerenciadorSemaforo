@@ -18,9 +18,10 @@ public class StreetView extends GridWorldView{
 	
 	@Override
 	public void draw(Graphics g, int x, int y, int object) {
-		super.drawAgent(g, x, y, Color.LIGHT_GRAY, -1);
+		super.drawAgent(g, x, y, Color.BLACK, -1);
         switch (object) {
         	case StreetModel.RUA:
+        		super.drawAgent(g, x, y, Color.LIGHT_GRAY, -1);
         		g.setColor(Color.DARK_GRAY);
             	super.drawString(g, x, y, defaultFont, smodel.direcao(x,y));
         		break;
