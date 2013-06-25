@@ -3,34 +3,40 @@ FUNCTION_BLOCK semaforo
 
 // Define input variables
 VAR_INPUT
-    qtdcarros1 : REAL;
-    qtdcarros2 : REAL;
+    qtd: REAL;
+    qtddir : REAL;
+	qtdindir : REAL;
 END_VAR
 
 // Define output variable
 VAR_OUTPUT
-    ajusteSem : REAL;
+    ajuste : REAL;
 END_VAR
 
-// Fuzzify input variable 'qtdcarros'
-FUZZIFY qtdcarros1
-    TERM pequena := gauss 0 1;
-    TERM media := gauss 1 1;
-    TERM alta := gauss 2 1;
+// Fuzzify input variable 'qtdSem'
+FUZZIFY qtd
+	TERM p := trian -0.99 1 2;
+    TERM m := trian 1 2 3;
+    TERM g := trian 2 4 6;
 END_FUZZIFY
 
-FUZZIFY qtdcarros2
-    TERM pequena := gauss 0 1;
-    TERM media := gauss 1 1;
-    TERM alta := gauss 2 1;
+FUZZIFY qtddir
+	TERM p := trian -0.99 1 2;
+    TERM m := trian 1 2 3;
+    TERM g := trian 2 4 6;
 END_FUZZIFY
 
+FUZZIFY qtdindir
+	TERM p := trian -0.99 1 2;
+    TERM m := trian 1 2 3;
+    TERM g := trian 2 4 6;
+END_FUZZIFY
 
 // Defzzzify output variable 'ajuste'
-DEFUZZIFY ajusteSem
+DEFUZZIFY ajuste
     TERM fraco := gauss 2 2;
-    TERM medio := gauss 6 2;
-    TERM forte := gauss 10 2;
+    TERM medio := gauss 5 2;
+    TERM forte := gauss 8 2;
     // Use 'Center Of Gravity' defuzzification method
     METHOD : COG;
     // Default value is 0 (if no rule activates defuzzifier)
@@ -46,15 +52,35 @@ RULEBLOCK No1
     // Use 'max' accumulation method
     ACCU : MAX;
 
-    RULE 1 : IF (qtdcarros1 IS pequena) AND (qtdcarros2 IS alta)    THEN ajusteSem IS fraco;
-    RULE 2 : IF (qtdcarros1 IS media)   AND (qtdcarros2 IS media)   THEN ajusteSem IS medio;
-    RULE 3 : IF (qtdcarros1 IS alta)    AND (qtdcarros2 IS pequena) THEN ajusteSem IS forte;
-    RULE 4 : IF (qtdcarros1 IS media)   AND (qtdcarros2 IS pequena) THEN ajusteSem IS fraco;
-    RULE 5 : IF (qtdcarros1 IS media)   AND (qtdcarros2 IS alta)    THEN ajusteSem IS forte;
-    RULE 6 : IF (qtdcarros1 IS alta)    AND (qtdcarros2 IS media)   THEN ajusteSem IS medio;
-    RULE 7 : IF (qtdcarros1 IS pequena) AND (qtdcarros2 IS media)   THEN ajusteSem IS medio;
-    RULE 8 : IF (qtdcarros1 IS pequena) AND (qtdcarros2 IS pequena) THEN ajusteSem IS fraco;
-    RULE 9 : IF (qtdcarros1 IS alta)    AND (qtdcarros2 IS alta)    THEN ajusteSem IS forte;
+    RULE 1 : IF (qtd IS p) 	AND (qtddir IS g) AND (qtdindir is p) THEN ajuste IS fraco;
+    RULE 2 : IF (qtd IS g)  AND (qtddir IS p) AND (qtdindir is p) THEN ajuste IS forte;
+    RULE 3 : IF (qtd IS g)  AND (qtddir IS m) AND (qtdindir is p) THEN ajuste IS forte;
+    RULE 4 : IF (qtd IS m)	AND (qtddir IS g) AND (qtdindir is p) THEN ajuste IS medio;
+    RULE 5 : IF (qtd IS p)  AND (qtddir IS m) AND (qtdindir is p) THEN ajuste IS fraco;
+    RULE 6 : IF (qtd IS m)  AND (qtddir IS p) AND (qtdindir is p) THEN ajuste IS medio;
+    RULE 7 : IF (qtd IS p) 	AND (qtddir IS p) AND (qtdindir is p) THEN ajuste IS fraco;
+    RULE 8 : IF (qtd IS m) 	AND (qtddir IS m) AND (qtdindir is p) THEN ajuste IS medio;
+    RULE 9 : IF (qtd IS g)  AND (qtddir IS g) AND (qtdindir is p) THEN ajuste IS forte;
+	
+	RULE 10 : IF (qtd IS p) 	AND (qtddir IS g) AND (qtdindir is m) THEN ajuste IS fraco;
+    RULE 11 : IF (qtd IS g)  AND (qtddir IS p) AND (qtdindir is m) THEN ajuste IS forte;
+    RULE 12 : IF (qtd IS g)  AND (qtddir IS m) AND (qtdindir is m) THEN ajuste IS forte;
+    RULE 13 : IF (qtd IS m)	AND (qtddir IS g) AND (qtdindir is m)THEN ajuste IS medio;
+    RULE 14 : IF (qtd IS p)  AND (qtddir IS m) AND (qtdindir is m)THEN ajuste IS fraco;
+    RULE 15 : IF (qtd IS m)  AND (qtddir IS p) AND (qtdindir is m)THEN ajuste IS medio;
+    RULE 16 : IF (qtd IS p) 	AND (qtddir IS p) AND (qtdindir is m)THEN ajuste IS fraco;
+    RULE 17 : IF (qtd IS m) 	AND (qtddir IS m) AND (qtdindir is m)THEN ajuste IS medio;
+    RULE 18 : IF (qtd IS g)  AND (qtddir IS g) AND (qtdindir is m) THEN ajuste IS forte;
+	
+	RULE 19 : IF (qtd IS p) 	AND (qtddir IS g) AND (qtdindir is g) THEN ajuste IS medio;
+    RULE 20 : IF (qtd IS g)  AND (qtddir IS p)AND (qtdindir is g) THEN ajuste IS forte;
+    RULE 21 : IF (qtd IS g)  AND (qtddir IS m)AND (qtdindir is g) THEN ajuste IS forte;
+    RULE 22 : IF (qtd IS m)	AND (qtddir IS g)AND (qtdindir is g) THEN ajuste IS forte;
+    RULE 23 : IF (qtd IS p)  AND (qtddir IS m)AND (qtdindir is g) THEN ajuste IS fraco;
+    RULE 24 : IF (qtd IS m)  AND (qtddir IS p)AND (qtdindir is g) THEN ajuste IS medio;
+    RULE 25 : IF (qtd IS p) 	AND (qtddir IS p)AND (qtdindir is g) THEN ajuste IS fraco;
+    RULE 26 : IF (qtd IS m) 	AND (qtddir IS m)AND (qtdindir is g) THEN ajuste IS medio;
+    RULE 27 : IF (qtd IS g)  AND (qtddir IS g) AND (qtdindir is g)THEN ajuste IS forte;
     				
 END_RULEBLOCK
 

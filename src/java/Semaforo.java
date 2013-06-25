@@ -53,13 +53,15 @@ public class Semaforo{
 	public int countCarros(int rua){
 		int carros = 0;
 		if(rua == 1){
-			for(int cont = 0; cont < rua1.length; cont++)
+			for(int cont = 0; cont < rua1.length; cont++){
 				if(smodel.hasObject(StreetModel.CARRO, rua1[cont]))
 					carros++;
+			}	
 		} else if(rua == 2){
-			for(int cont = 0; cont < rua2.length; cont++)
+			for(int cont = 0; cont < rua2.length; cont++){
 				if(smodel.hasObject(StreetModel.CARRO, rua2[cont]))
 					carros++;
+			}
 		}
 		return carros;
 	}
@@ -74,16 +76,18 @@ public class Semaforo{
         }
         
         if(aberto1){
-        	fis.setVariable("qtdcarros1", countCarros(2));
-            fis.setVariable("qtdcarros2", countCarros(1));
+        	fis.setVariable("qtd", countCarros(2));
+            fis.setVariable("qtddir", countCarros(1));
+            fis.setVariable("qtdindir", 6);
         } else {
-        	fis.setVariable("qtdcarros1", countCarros(1));
-            fis.setVariable("qtdcarros2", countCarros(2));
+        	fis.setVariable("qtd", countCarros(1));
+            fis.setVariable("qtddir", countCarros(2));
+            fis.setVariable("qtdindir", 6);
         }
 
         fis.evaluate();
         
-        double value = fis.getVariable("ajusteSem").defuzzify();
+        double value = fis.getVariable("ajuste").defuzzify();
         
         return (int)value;
 	}
@@ -93,12 +97,13 @@ public class Semaforo{
 			public void run(){
 				timer.cancel();
 				System.out.println("[SINAL "+location+"] - T1:"+tempo1+" T2:"+tempo2+ " [PRE]");
+				int fuz = fuzzy();
 				if(aberto1){
-					tempo2 += fuzzy();
+					tempo2 += fuz;
 				} else {
-					tempo1 += fuzzy();
+					tempo1 += fuz;
 				}
-				System.out.println("[SINAL "+location+"] - T1:"+tempo1+" T2:"+tempo2+ " [POS]");
+				System.out.println("[SINAL "+location+"] - T1:"+tempo1+" T2:"+tempo2+ " [POS]   - FUZZY: "+fuz+" count1: "+countCarros(1)+" cont2: "+countCarros(2));
 				
 				aberto1 = !aberto1;
 				

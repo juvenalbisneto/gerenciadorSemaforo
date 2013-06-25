@@ -8,7 +8,7 @@ public class StreetView extends GridWorldView{
 	StreetModel smodel;
 	
 	public StreetView(StreetModel model) {
-		super(model, "Controle de Tr‰nsito", model.gridSize*60);
+		super(model, "Controle de Transito", model.gridSize*60);
         smodel = model;
         model.setView(this);
         defaultFont = new Font("Arial", Font.BOLD, 16);

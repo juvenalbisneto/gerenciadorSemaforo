@@ -23,19 +23,20 @@ public class FuzzyTest {
         fis.chart();
 
         // Set inputs
-        fis.setVariable("qtdcarros1", 3);
-        fis.setVariable("qtdcarros2", 0);
+        fis.setVariable("qtd", 3);
+        fis.setVariable("qtddir", 1);
+        fis.setVariable("qtdindir", 2);
 
         // Evaluate
         fis.evaluate();
 
         // Show output variable's chart 
-        fis.getVariable("ajusteSem").chartDefuzzifier(true);
+        fis.getVariable("ajuste").chartDefuzzifier(true);
 //        fis.getVariable("ajusteSem2").chartDefuzzifier(true);
         
-        double value = fis.getVariable("ajusteSem").defuzzify();
+        double value = fis.getVariable("ajuste").defuzzify();
         System.out.println("DEFUZZIFY: " + value);
-        value = fis.getVariable("ajusteSem").getValue();
+        value = fis.getVariable("ajuste").getValue();
         System.out.println("GET VALUE: "+value);
         System.out.println("VALOOOOOOOOOOR "+value);
         
