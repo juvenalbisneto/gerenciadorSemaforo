@@ -5,7 +5,7 @@ import cartago.tools.GUIArtifact;
 
 public class GUI extends GUIArtifact {
 	public void setup() {
-		StreetModel model = new StreetModel(10);
+		StreetModel model = new StreetModel(25);
 		StreetView view = new StreetView(model);
 		view.setVisible(true);
 	}
