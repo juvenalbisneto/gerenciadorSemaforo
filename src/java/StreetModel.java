@@ -10,7 +10,7 @@ import jason.environment.grid.Location;
 public class StreetModel extends GridWorldModel {
 	public int gridSize;
 	public static final int TIMER = 150;
-	public static final int MAX_CARROS = 50;
+	public static final int MAX_CARROS = 40;
 	
 	public static final int RUA = 8;
 	public static final int CARRO = 16;
@@ -224,7 +224,6 @@ public class StreetModel extends GridWorldModel {
 		rua02[8] = new Location(0,2);
 		rua02[9] = new Location(0,3);
 		addSemaforo(0, new Location(6,0), new Location(7,0), new Location(5,0), rua01, rua02);
-		semaforos.get(new Location(6,0)).setIndireto(semaforos.get(new Location(19,0)));
 		
 		// Semaforo 2
 		Location[] rua11 = new Location[5];
@@ -234,7 +233,6 @@ public class StreetModel extends GridWorldModel {
 		for(cont = 0; cont <= 7; cont++)
 			rua12[cont] = new Location(19,1+cont);
 		addSemaforo(1, new Location(19,0), new Location(20,0), new Location(19,1), rua11, rua12);
-		semaforos.get(new Location(19,0)).setIndireto(semaforos.get(new Location(18,9)));
 		
 		// Semaforo 3
 		Location[] rua21 = new Location[8];
@@ -244,7 +242,6 @@ public class StreetModel extends GridWorldModel {
 		for(cont = 0; cont <= 7; cont++)
 			rua22[cont] = new Location(18,10+cont);
 		addSemaforo(2, new Location(18,9), new Location(17,9), new Location(18,10), rua21, rua22);
-		semaforos.get(new Location(18,9)).setIndireto(semaforos.get(new Location(6,0)));
 		
 		// Semaforo 4
 		Location[] rua31 = new Location[8];
@@ -254,7 +251,6 @@ public class StreetModel extends GridWorldModel {
 		for(cont = 0; cont <= 4; cont++)
 			rua32[cont] = new Location(1+cont,18);
 		addSemaforo(3, new Location(6,18), new Location(6,17), new Location(5,18), rua31, rua32);
-		semaforos.get(new Location(6,18)).setIndireto(semaforos.get(new Location(6,0)));
 		
 		// Semaforo 5
 		Location[] rua41 = new Location[5];
@@ -264,7 +260,6 @@ public class StreetModel extends GridWorldModel {
 		for(cont = 0; cont <= 4; cont++)
 			rua42[cont] = new Location(7+cont,24);
 		addSemaforo(4, new Location(6,24), new Location(6,23), new Location(7,24), rua41, rua42);
-		semaforos.get(new Location(6,24)).setIndireto(semaforos.get(new Location(6,18)));
 		
 		// Semaforo 6
 		Location[] rua51 = new Location[9];
@@ -279,10 +274,14 @@ public class StreetModel extends GridWorldModel {
 		rua52[7] = new Location(20,18);
 		rua52[8] = new Location(19,18);
 		addSemaforo(5, new Location(22,24), new Location(23,24), new Location(22,23), rua51, rua52);
-		semaforos.get(new Location(22,24)).setIndireto(semaforos.get(new Location(6,18)));
 		
 		// DIZ AS LIGACOES DOS SINAIS
-		
+		semaforos.get(new Location(6,0)).setIndireto(semaforos.get(new Location(19,0)));
+		semaforos.get(new Location(19,0)).setIndireto(semaforos.get(new Location(18,9)));
+		semaforos.get(new Location(18,9)).setIndireto(semaforos.get(new Location(6,0)));
+		semaforos.get(new Location(6,18)).setIndireto(semaforos.get(new Location(6,0)));
+		semaforos.get(new Location(6,24)).setIndireto(semaforos.get(new Location(6,18)));
+		semaforos.get(new Location(22,24)).setIndireto(semaforos.get(new Location(6,18)));
 		
 		// CRIA AS RUAS
 		Integer[] esq   = new Integer[1];   esq[0] = Direcao.ESQUERDA;
@@ -384,7 +383,7 @@ public class StreetModel extends GridWorldModel {
 	//SEMAFORO
 	public void addSemaforo(int index, Location loc, Location origem1, Location origem2, Location[] rua1, Location[] rua2){
 		this.setAgPos(index, loc);
-		semaforos.put(loc, new Semaforo(this, loc, origem1, origem2, 4, 4, rua1, rua2));
+		semaforos.put(loc, new Semaforo(this, loc, origem1, origem2, 10, 10, rua1, rua2));
 	}
 	
 	

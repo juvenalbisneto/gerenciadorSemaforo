@@ -101,9 +101,9 @@ public class Semaforo{
 			System.out.println("[SINAL "+location+"] - "+tempo1+" "+tempo2+ " [PRE]["+(aberto1?"1":"2")+"]");
 			int fuz = fuzzy();
 			if(aberto1){
-				tempo2 = fuz + 4;
+				tempo2 = fuz + 2;
 			} else {
-				tempo1 = fuz + 4;
+				tempo1 = fuz + 2;
 			}
 			System.out.println("[SINAL "+location+"] - "+tempo1+" "+tempo2+ " [POS]["+(aberto1?"1":"2")+"] - FUZZY: "+fuz+" count1: "+countCarros(1)+" cont2: "+countCarros(2));
 
